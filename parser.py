@@ -25,17 +25,29 @@ def output_check(choices, fname):
 
     #checks if the file already exists. If it does it'll append a number so as not to overwrite
     counter = 1
-    while is_file(fname):
-        print("file already exists")
-        first_half, second_half = os.path.splitext(fname)
 
-        new_fname = '{0}({1}){2}'.format(first_half,counter,second_half)
-        print(new_fname)
+    while is_file(fname):
+        #print("file already exists")
+        first_half, second_half = os.path.splitext(fname)
+        # check to see if first_half ends with underscore and then a number ie. _1
+        if '_' in first_half:
+            # ifthe name contain underscores, split on the last underscore
+            f,num = first_half.rsplit('_')
+            if num.isdigit():
+                # if the last bit of the split is a digit, increase it by one and stitch the string back together
+                num = int(num)
+                num += 1
+                counter = num
+
+                first_half = f
+                
+            
+        new_fname = "{0}_{1}{2}".format(first_half,counter,second_half)
         fname = new_fname
         counter += 1
-
+    
     # if not then append a number to the end of the filename before extension
-
+    print(fname)
     return fname
 
 def file_choices(choices,fname):
